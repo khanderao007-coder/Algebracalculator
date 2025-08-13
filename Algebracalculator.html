@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebraic Equation Solver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .input-area {
+            margin-bottom: 20px;
+        }
+        .input-area input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            text-align: right;
+        }
+        .result {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 1.2rem;
+            min-height: 40px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .operator {
+            background-color: #f97316;
+            color: white;
+        }
+        .number, .variable, .decimal {
+            background-color: #e5e7eb;
+        }
+        .equals {
+            background-color: #22c55e;
+            color: white;
+        }
+        .clear {
+            background-color: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="input-area">
+            <input type="text" id="equationInput" placeholder="Enter equation (e.g., 2x + 3 = 7)" />
+        </div>
+        <div class="result" id="result">Solution: </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearInput()">C</button>
+            <button class="variable" onclick="appendToInput('x')">x</button>
+            <button class="operator" onclick="appendToInput('=')">=</button>
+            <button class="operator" onclick="appendToInput('+')">+</button>
+            
+            <button class="number" onclick="appendToInput('7')">7</button>
+            <button class="number" onclick="appendToInput('8')">8</button>
+            <button class="number" onclick="appendToInput('9')">9</button>
+            <button class="operator" onclick="appendToInput('-')">-</button>
+            
+            <button class="number" onclick="appendToInput('4')">4</button>
+            <button class="number" onclick="appendToInput('5')">5</button>
+            <button class="number" onclick="appendToInput('6')">6</button>
+            <button class="operator" onclick="appendToInput('*')">×</button>
+            
+            <button class="number" onclick="appendToInput('1')">1</button>
+            <button class="number" onclick="appendToInput('2')">2</button>
+            <button class="number" onclick="appendToInput('3')">3</button>
+            <button class="operator" onclick="appendToInput('/')">÷</button>
+            
+            <button class="number" onclick="appendToInput('0')">0</button>
+            <button class="decimal" onclick="appendToInput('.')">.</button>
+            <button class="operator" onclick="appendToInput('^')">^</button>
+            <button class="equals" onclick="solveEquation()">Solve</button>
+        </div>
+    </div>
+    <script>
+        const input = document.getElementById('equationInput');
+        const result = document.getElementById('result');
+
+        function appendToInput(value) {
+            input.value += value;
+        }
+
+        function clearInput() {
+            input.value = '';
+            result.innerText = 'Solution: ';
+        }
+
+        function solveEquation() {
+            try {
+                let equation = input.value.replace('×', '*').replace('÷', '/');
+                // Split equation into left and right sides
+                let sides = equation.split('=');
+                if (sides.length !== 2) {
+                    result.innerText = 'Solution: Invalid equation';
+                    return;
+                }
+                // Move all terms to one side (e.g., 2x + 3 = 7 -> 2x + 3 - 7 = 0)
+                let expression = `(${sides[0]}) - (${sides[1]})`;
+                // Solve for x
+                let solution = math.simplify(expression);
+                let solutions = math.solve(solution.toString(), 'x');
+                
+                if (Array.isArray(solutions)) {
+                    // Handle multiple solutions (e.g., quadratic equations)
+                    result.innerText = 'Solution: x = ' + solutions.map(s => math.format(s, { precision: 4 })).join(', ');
+                } else if (solutions !== null && solutions !== undefined) {
+                    // Handle single solution
+                    result.innerText = 'Solution: x = ' + math.format(solutions, { precision: 4 });
+                } else {
+                    result.innerText = 'Solution: No solution';
+                }
+            } catch (error) {
+                result.innerText = 'Solution: Error';
+            }
+        }
+    </script>
+</body>
+</html>
