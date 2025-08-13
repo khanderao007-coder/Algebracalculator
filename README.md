@@ -20,8 +20,7 @@ A web-based algebraic equation solver built with **HTML**, **JavaScript**, **Tai
 - Handles basic arithmetic operations (`+`, `-`, `*`, `/`, `^`)
 
 ## Demo
-[Optional: If hosted online, e.g., on GitHub Pages, add a link here]
-Check out the live demo: [Insert URL, e.g., https://khanderao007-coder.github.io/Algebracalculator]
+Check out the live demo:  https://khanderao007-coder.github.io/Algebracalculator
 
 ## Installation
 
@@ -29,7 +28,4 @@ Check out the live demo: [Insert URL, e.g., https://khanderao007-coder.github.io
 - A modern web browser (e.g., Chrome, Firefox, Edge)
 - No additional software required, as the project runs entirely in the browser
 
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/khanderao007-coder/Algebracalculator.git
+
